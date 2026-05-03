@@ -1,63 +1,53 @@
-# AI-Powered Agentic Issue Triage System
+# 🤖 AI-Powered Agentic Issue Triage System
 
 An end-to-end AI-driven system that analyzes application logs, identifies root causes, groups recurring failures, and integrates with GitHub Issues for automated tracking and resolution.
 
 ---
 
-## Overview
+## 📋 Overview
 
 Modern systems generate large volumes of logs, but debugging remains largely manual and inefficient. This project automates the entire triage workflow:
 
-- Parses raw logs into structured data  
-- Uses LLMs to identify root causes and fixes  
-- Groups recurring errors to prevent duplication  
-- Automatically creates or reuses GitHub issues  
-- Provides a UI for monitoring and issue management  
+- Parses raw logs into structured data
+- Uses LLMs to identify root causes and fixes
+- Groups recurring errors to prevent duplication
+- Automatically creates or reuses GitHub issues
+- Provides a UI for monitoring and issue management
 
 ---
 
-## Architecture
+## 🏗️ Architecture
 
+```
 Logs → LogParserAgent → RootCauseAgent (LLM) → BugReportAgent → Memory Store → GitHub Integration
+```
 
 ---
 
-## Core Components
+## ⚙️ Core Components
 
-### LogParserAgent
+### `LogParserAgent`
 Extracts structured signals from raw logs:
-- Error messages  
-- Stack traces  
-- Contextual information  
+- Error messages
+- Stack traces
+- Contextual information
 
----
+### `RootCauseAgent` *(LLM-based)*
+Uses the Anthropic API to:
+- Classify error type
+- Identify root cause
+- Suggest remediation steps
 
-### RootCauseAgent (LLM-based)
-Uses an LLM (Anthropic API) to:
-- Classify error type  
-- Identify root cause  
-- Suggest remediation steps  
-
----
-
-### BugReportAgent
+### `BugReportAgent`
 Generates structured bug reports:
-- Title  
-- Description  
-- Fix steps  
+- Title
+- Description
+- Fix steps
 
----
+### `TaggingAgent`
+Automatically assigns tags such as: `backend`, `database`, `infrastructure`, `API`
 
-### TaggingAgent
-Automatically assigns tags such as:
-- backend  
-- database  
-- infrastructure  
-- API  
-
----
-
-### Memory Store (Error Grouping)
+### Memory Store *(Error Grouping)*
 Tracks recurring failures and prevents duplicate issues:
 
 ```json
@@ -65,139 +55,147 @@ Tracks recurring failures and prevents duplicate issues:
   "error_type": "HTTP 500",
   "root_cause": "Database connection timeout",
   "count": 47,
-  "issue_url": "..."
+  "issue_url": "https://github.com/yourusername/repo/issues/42"
 }
+```
 
+### GitHub Integration
+- Creates issues for new error groups
+- Reuses existing issues for repeated failures
+- Enables closing issues via API/UI
 
+---
 
-GitHub Integration
-Creates issues for new error groups
-Reuses existing issues for repeated failures
-Enables closing issues via API/UI
-LLM-Based Issue Classification
-
-Groups issues semantically into categories such as:
-
-Server Errors
-Database Failures
-Upstream Service Issues
-Transient Failures
-
-This is not rule-based; classification is driven by the LLM.
-
-LLM Usage
+## 🧠 LLM Usage
 
 The system leverages LLMs for:
+- Semantic error classification
+- Root cause reasoning
+- Fix recommendation generation
+- Issue grouping
 
-Semantic error classification
-Root cause reasoning
-Fix recommendation generation
-Issue grouping
+**Example LLM output:**
 
-Example output:
-
+```python
 analysis = {
     "error_type": "Internal Server Error",
     "root_cause": "Database connection timeout",
-    "fix_steps": ["Increase DB pool size", "Add retry logic"]
+    "fix_steps": [
+        "Increase DB pool size",
+        "Add retry logic"
+    ]
 }
+```
 
+### Issue Classification Categories
+Classification is **LLM-driven** (not rule-based), grouping issues into:
+- Server Errors
+- Database Failures
+- Upstream Service Issues
+- Transient Failures
 
+---
 
-🌐 API Endpoints
+## 🌐 API Endpoints
 
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/analyze` | Analyze submitted logs |
+| `POST` | `/upload` | Upload log files |
+| `GET` | `/top-errors` | Retrieve top recurring errors |
+| `GET` | `/issues` | Get grouped GitHub issues |
+| `POST` | `/close-issue/{issue_number}` | Close a specific issue |
 
-Analyze Logs-->POST /analyze
+---
 
-Upload Logs-->POST /upload
+## 🎯 Features
 
-Get Top Errors-->GET /top-errors
+- ✅ LLM-based debugging
+- ✅ Automatic root cause detection
+- ✅ Smart grouping of recurring errors
+- ✅ GitHub issue automation
+- ✅ UI dashboard for monitoring
+- ✅ Tagging + classification
+- ✅ Persistent memory store
 
-Get Grouped GitHub Issues-->GET /issues
+---
 
-Close Issue-->POST /close-issue/{issue_number}
+## 🖥️ Frontend Dashboard
 
+- Analyze logs
+- View grouped issues
+- Close issues from UI
+- Track recurring failures
 
-🎯 Features
+**Example input/output:**
 
-✔ LLM-based debugging
-✔ Automatic root cause detection
-✔ Smart grouping of recurring errors
-✔ GitHub issue automation
-✔ UI dashboard for monitoring
-✔ Tagging + classification
-✔ Persistent memory store
+```
+Input:  HTTP 500 Internal Server Error
 
+Output:
+  Error Type:  Internal Server Error
+  Root Cause:  Backend service failure
+  Fix Steps:
+    - Check application logs
+    - Restart the service
+```
 
+---
 
-🖥️ Frontend Dashboard
-Analyze logs
-View grouped issues
-Close issues from UI
-Track recurring failures
+## 🛠️ Tech Stack
 
+| Layer | Technology |
+|-------|------------|
+| Backend | FastAPI, Python, Uvicorn |
+| AI / LLM | Anthropic API |
+| Frontend | React.js |
+| Integration | GitHub API |
 
-Example Input-->HTTP 500 Internal Server Error
+---
 
-Error Type: Internal Server Error
-Root Cause: Backend service failure
-Fix Steps:
-- Check logs
-- Restart service
+## 🚀 Setup
 
+**Clone and install:**
 
-Tech Stack
-
-Backend
---FastAPI
---Python
---Uvicorn
-
-AI / LLM
---Anthropic API
-
-Frontend
---React.js
-
-Integration
----GitHub API
-
-Setup-->>
-
+```bash
 git clone https://github.com/yourusername/Agent_Triage_System.git
 cd Backend
 pip install -r requirements.txt
+```
 
-Environment Variables
+**Environment variables — create a `.env` file:**
 
-Create .env:
-
-ANTHROPIC_API_KEY=your_key
-GITHUB_TOKEN=your_token
+```env
+ANTHROPIC_API_KEY=your_anthropic_key
+GITHUB_TOKEN=your_github_token
 GITHUB_REPO=username/repo
+```
 
+---
 
+## 💡 Why This Project?
 
-Why This is Valuable
+Demonstrates real-world engineering skills:
 
-This project demonstrates:
+- **Agentic AI systems** — multi-agent orchestration
+- **LLM integration** — production-grade Anthropic API usage
+- **System design** — modular, scalable architecture
+- **Automation** — end-to-end engineering workflow
 
-Agentic AI systems
-LLM integration in production workflows
-System design thinking
-Automation of real-world engineering tasks
+---
 
+## 📦 Use Cases
 
-🎯 Use Cases:--
-DevOps automation
-Incident management
-Log intelligence systems
-AI-assisted debugging tools
+- DevOps automation
+- Incident management
+- Log intelligence systems
+- AI-assisted debugging tools
 
+---
 
-📈 Future Improvements:--
-Vector DB for semantic dedup
-Real-time log ingestion
-Slack/Email alerts
-Advanced analytics dashboard
+## 📈 Future Improvements
 
+- [ ] Vector DB for semantic deduplication
+- [ ] Real-time log ingestion
+- [ ] Slack / Email alerts
+- [ ] Advanced analytics dashboard
