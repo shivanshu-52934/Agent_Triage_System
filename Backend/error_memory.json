@@ -1,0 +1,42 @@
+{
+  "d1d85b61f8": {
+    "error_type": "Internal Server Error",
+    "root_cause": "Unspecified server-side error occurred during request processing",
+    "count": 2,
+    "first_seen": "2026-05-03T19:20:25.074788",
+    "last_seen": "2026-05-03T19:20:40.769886",
+    "issue_url": "https://github.com/shivanshu-52934/agentic-debugger/issues/24"
+  },
+  "9efa4363cf": {
+    "error_type": "Internal Server Error",
+    "root_cause": "Server encountered an unhandled exception or critical failure during request processing",
+    "count": 1,
+    "first_seen": "2026-05-03T19:22:57.677260",
+    "last_seen": "2026-05-03T19:22:57.677260",
+    "issue_url": "https://github.com/shivanshu-52934/agentic-debugger/issues/25"
+  },
+  "3e3c4b84cc": {
+    "error_type": "Internal Server Error",
+    "root_cause": "Unhandled exception or misconfiguration on server side preventing request processing",
+    "count": 1,
+    "first_seen": "2026-05-03T19:52:23.925471",
+    "last_seen": "2026-05-03T19:52:23.925471",
+    "issue_url": "https://github.com/shivanshu-52934/agentic-debugger/issues/26"
+  },
+  "49dfd49ea3": {
+    "error_type": "Internal Server Error",
+    "root_cause": "Unhandled exception or misconfiguration on server-side; insufficient details in log to identify specific cause",
+    "count": 1,
+    "first_seen": "2026-05-03T19:52:53.480247",
+    "last_seen": "2026-05-03T19:52:53.480247",
+    "issue_url": "https://github.com/shivanshu-52934/agentic-debugger/issues/27"
+  },
+  "a86a80e71f": {
+    "error_type": "Backend Error",
+    "root_cause": "Unspecified server-side exception occurred during request processing",
+    "count": 2,
+    "first_seen": "2026-05-03T20:01:55.894305",
+    "last_seen": "2026-05-03T20:02:23.276660",
+    "issue_url": "https://github.com/shivanshu-52934/agentic-debugger/issues/28"
+  }
+}
