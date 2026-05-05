@@ -1,138 +1,121 @@
-from app.agents.log_parser import LogParserAgent
-from app.agents.root_cause_agent import RootCauseAgent
-from app.agents.bug_report_agent import BugReportAgent
-from app.agents.github_agent import GitHubAgent
-from app.agents.tagging_agent import TaggingAgent
-
-from app.services.memory_store import (
-    update_error_group,
-    attach_issue,
-    get_error_group
-)
-
-from app.services.evaluation import evaluate_result
-
-import time
 from datetime import datetime
 
-
-# 🔥 STRONG RULE-BASED CLASSIFIER
-def classify_error(log_text):
-    text = log_text.lower()
-
-    if "500" in text or "internal server error" in text:
-        return "Backend Error", "Critical Bug"
-
-    if "timeout" in text:
-        return "Performance Issue", "Warning"
-
-    if "database" in text:
-        return "Database Issue", "Critical Bug"
-
-    if "memory" in text or "cuda" in text:
-        return "Memory Error", "Critical Bug"
-
-    return "Unknown", "Info"
+from app.agents.bug_report_agent import BugReportAgent
+from app.agents.github_agent import GitHubAgent
+from app.agents.log_parser import LogParserAgent
+from app.agents.root_cause_agent import RootCauseAgent
+from app.agents.tagging_agent import TaggingAgent
+from app.agents.test_generation_agent import TestGenerationAgent
+from app.services.evaluation import evaluate_result
+from app.services.memory_store import attach_issue, get_error_group, update_error_group
+from app.services.rule_classifier import classify_error
+from app.services.tracing import trace_span
 
 
 def safe_run(agent, input_data):
+    agent_name = agent.__class__.__name__
+    retry_count = 0
+
     try:
-        start = time.time()
-        output = agent.run(input_data)
-        duration = round(time.time() - start, 2)
+        with trace_span(agent_name, input_data=input_data) as span:
+            output = agent.run(input_data)
+            retry_count = int(output.get("retry_count", 0)) if isinstance(output, dict) else 0
+            span["retry_count"] = retry_count
 
         return {
-            "agent": agent.__class__.__name__,
+            "agent": agent_name,
             "status": "success",
-            "duration": duration,
+            "retry_count": retry_count,
             "output": output,
         }
 
-    except Exception as e:
-        print(f"🔥 ERROR in {agent.__class__.__name__}: {str(e)}")
+    except Exception as exc:
         return {
-            "agent": agent.__class__.__name__,
+            "agent": agent_name,
             "status": "failed",
-            "error": str(e),
-            "output": {}
+            "retry_count": retry_count,
+            "error": str(exc),
+            "output": {},
         }
 
 
-def run_pipeline(log_text: str):
+def run_pipeline(
+    log_text: str,
+    create_github_issue: bool = True,
+    record_memory: bool = True,
+):
     trace = []
 
     if not log_text.strip():
         return {"status": "error", "message": "Empty log"}
 
-    # 🔥 STEP 0 — RULE CLASSIFICATION (NEW)
-    error_type, classification = classify_error(log_text)
+    rule_error_type, rule_classification = classify_error(log_text)
 
-    # STEP 1 — PARSER
     parser = LogParserAgent()
     parsed = safe_run(parser, log_text)
     trace.append(parsed)
 
-    # STEP 2 — ROOT CAUSE (OPTIONAL)
     root_agent = RootCauseAgent()
     root = safe_run(root_agent, parsed.get("output", {}))
     trace.append(root)
 
-    root_data = root.get("output", {}).get("analysis", {})
-
-    # 🔥 FALLBACK IF LLM FAILS
+    root_output = root.get("output", {})
+    root_data = root_output.get("analysis", {})
     root_cause = root_data.get("root_cause") or log_text[:200]
+    error_type = root_data.get("error_type") or rule_error_type
+    classification = root_data.get("classification") or rule_classification
 
-    # STEP 3 — BUG REPORT
     bug_agent = BugReportAgent()
     report = safe_run(bug_agent, {"analysis": root_data})
     trace.append(report)
 
     final_report = report.get("output", {})
-
     final_report["classification"] = classification
     final_report["error_type"] = error_type
     final_report["root_cause"] = root_cause
     final_report["fix_steps"] = root_data.get("fix_steps", [])
+    final_report["recovered"] = root_output.get("recovered", False)
+    final_report["analysis_source"] = root_data.get("source", "unknown")
 
-    # STEP 4 — TAGGING
     tagger = TaggingAgent()
-    try:
-        final_report["tags"] = tagger.run(root_data)
-    except:
-        final_report["tags"] = []
+    tag_result = safe_run(tagger, root_data)
+    trace.append(tag_result)
+    final_report["tags"] = tag_result.get("output", []) or ["general"]
 
-    # STEP 5 — GROUPING (FIXED)
-    key, group = update_error_group(error_type, root_cause)
+    test_agent = TestGenerationAgent()
+    test_result = safe_run(test_agent, root_data)
+    trace.append(test_result)
+    final_report["regression_test"] = test_result.get("output", {})
 
-    final_report["group"] = key
-    final_report["occurrences"] = group["count"]
+    if record_memory:
+        key, group = update_error_group(error_type, root_cause)
+        final_report["group"] = key
+        final_report["occurrences"] = group["count"]
+    else:
+        key = None
+        final_report["group"] = None
+        final_report["occurrences"] = 0
 
-    # STEP 6 — GITHUB (FIXED)
-    github = GitHubAgent()
-    latest_group = get_error_group(key)
-
-    if classification == "Critical Bug":
+    if record_memory and create_github_issue and classification == "Critical Bug":
+        github = GitHubAgent()
+        latest_group = get_error_group(key)
 
         if not latest_group.get("issue_url"):
-            print("🆕 Creating issue")
-
-            issue_url = github.create_issue(
-                title=f"[{error_type}] Error detected",
-                body=f"Error Type: {error_type}\n\nRoot Cause:\n{root_cause}"
-            )
-
+            with trace_span("GitHubAgent.create_issue", input_data=final_report):
+                issue_url = github.create_issue(
+                    title=f"[{error_type}] Error detected",
+                    body=f"Error Type: {error_type}\n\nRoot Cause:\n{root_cause}",
+                )
             attach_issue(key, issue_url)
-
             latest_group = get_error_group(key)
-
-        else:
-            print("📌 Reusing existing issue")
 
         final_report["issue_url"] = latest_group.get("issue_url")
 
-    return {
+    result = {
         "status": "success",
         "timestamp": datetime.now().isoformat(),
         "trace": trace,
-        "final_report": final_report
+        "final_report": final_report,
     }
+    result["evaluation"] = evaluate_result(result)
+    return result

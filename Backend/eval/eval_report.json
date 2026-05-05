@@ -1,0 +1,411 @@
+{
+  "generated_at": "2026-05-05T23:20:52.696475",
+  "total_samples": 20,
+  "metrics": {
+    "title_precision": 0.9,
+    "classification_precision": 0.9,
+    "exact_case_precision": 0.8
+  },
+  "cases": [
+    {
+      "id": "http-500",
+      "expected": {
+        "error_type": "Backend Error",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: HTTP 500 Internal Server Error",
+        "error_type": "HTTP 500 Internal Server Error",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "timeout",
+      "expected": {
+        "error_type": "Performance Issue",
+        "classification": "Warning"
+      },
+      "actual": {
+        "title": "Critical Bug: Request Timeout",
+        "error_type": "Request Timeout",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": false,
+        "score": 0.5
+      }
+    },
+    {
+      "id": "database",
+      "expected": {
+        "error_type": "Database Issue",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Database Connection Pool Exhausted",
+        "error_type": "Database Connection Pool Exhausted",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "cuda-memory",
+      "expected": {
+        "error_type": "Memory Error",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: CUDA Memory Exhaustion",
+        "error_type": "CUDA Memory Exhaustion",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "import",
+      "expected": {
+        "error_type": "Dependency Import Error",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Missing Dependency",
+        "error_type": "Missing Dependency",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "connection",
+      "expected": {
+        "error_type": "Service Connection Failure",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Service Connection Failure",
+        "error_type": "Service Connection Failure",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "assertion",
+      "expected": {
+        "error_type": "Test Assertion Failure",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: HTTP 500 Server Error",
+        "error_type": "HTTP 500 Server Error",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": false,
+        "classification_match": true,
+        "score": 0.5
+      }
+    },
+    {
+      "id": "permission",
+      "expected": {
+        "error_type": "Authentication Issue",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: File Permission Denied",
+        "error_type": "File Permission Denied",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "not-found",
+      "expected": {
+        "error_type": "Routing Error",
+        "classification": "Warning"
+      },
+      "actual": {
+        "title": "Warning: Resource Not Found",
+        "error_type": "Resource Not Found",
+        "classification": "Warning",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.6,
+        "quality": "medium",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "syntax",
+      "expected": {
+        "error_type": "Syntax Error",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: SyntaxError",
+        "error_type": "SyntaxError",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "type",
+      "expected": {
+        "error_type": "Type Error",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Type Mismatch in Arithmetic Operation",
+        "error_type": "Type Mismatch in Arithmetic Operation",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "value",
+      "expected": {
+        "error_type": "Value Error",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Type Conversion Error",
+        "error_type": "Type Conversion Error",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": false,
+        "classification_match": true,
+        "score": 0.5
+      }
+    },
+    {
+      "id": "sql",
+      "expected": {
+        "error_type": "Database Issue",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Unique Constraint Violation",
+        "error_type": "Unique Constraint Violation",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "gateway-500",
+      "expected": {
+        "error_type": "Backend Error",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Upstream Server Error",
+        "error_type": "Upstream Server Error",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "slow-job",
+      "expected": {
+        "error_type": "Performance Issue",
+        "classification": "Warning"
+      },
+      "actual": {
+        "title": "Critical Bug: Job Timeout",
+        "error_type": "Job Timeout",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": false,
+        "score": 0.5
+      }
+    },
+    {
+      "id": "postgres",
+      "expected": {
+        "error_type": "Database Issue",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Serialization Conflict",
+        "error_type": "Serialization Conflict",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "unauthorized",
+      "expected": {
+        "error_type": "Authentication Issue",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Token Signature Verification Failure",
+        "error_type": "Token Signature Verification Failure",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "memory",
+      "expected": {
+        "error_type": "Memory Error",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: Memory Allocation Failure",
+        "error_type": "Memory Allocation Failure",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "import-error",
+      "expected": {
+        "error_type": "Dependency Import Error",
+        "classification": "Critical Bug"
+      },
+      "actual": {
+        "title": "Critical Bug: ImportError - Missing or Incorrect Module Export",
+        "error_type": "ImportError - Missing or Incorrect Module Export",
+        "classification": "Critical Bug",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.9,
+        "quality": "high",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    },
+    {
+      "id": "unknown-info",
+      "expected": {
+        "error_type": "Unknown",
+        "classification": "Info"
+      },
+      "actual": {
+        "title": "Info: Normal Operation",
+        "error_type": "Normal Operation",
+        "classification": "Info",
+        "analysis_source": "llm"
+      },
+      "evaluation": {
+        "confidence": 0.4,
+        "quality": "low",
+        "title_match": true,
+        "classification_match": true,
+        "score": 1.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "http-500",
+    "log": "ERROR api.orders: HTTP 500 Internal Server Error while POST /orders",
+    "expected": {"error_type": "Backend Error", "classification": "Critical Bug"}
+  },
+  {
+    "id": "timeout",
+    "log": "TimeoutError: request to payment provider timed out after 30000ms",
+    "expected": {"error_type": "Performance Issue", "classification": "Warning"}
+  },
+  {
+    "id": "database",
+    "log": "psycopg2.OperationalError: database connection pool exhausted",
+    "expected": {"error_type": "Database Issue", "classification": "Critical Bug"}
+  },
+  {
+    "id": "cuda-memory",
+    "log": "RuntimeError: CUDA out of memory while allocating tensor",
+    "expected": {"error_type": "Memory Error", "classification": "Critical Bug"}
+  },
+  {
+    "id": "import",
+    "log": "ModuleNotFoundError: No module named 'requests'",
+    "expected": {"error_type": "Dependency Import Error", "classification": "Critical Bug"}
+  },
+  {
+    "id": "connection",
+    "log": "requests.exceptions.ConnectionError: connection refused by inventory-service",
+    "expected": {"error_type": "Service Connection Failure", "classification": "Critical Bug"}
+  },
+  {
+    "id": "assertion",
+    "log": "AssertionError: expected status code 200 but received 500",
+    "expected": {"error_type": "Test Assertion Failure", "classification": "Critical Bug"}
+  },
+  {
+    "id": "permission",
+    "log": "Permission denied writing /var/app/cache/session.json",
+    "expected": {"error_type": "Authentication Issue", "classification": "Critical Bug"}
+  },
+  {
+    "id": "not-found",
+    "log": "GET /api/users/42 returned 404 not found",
+    "expected": {"error_type": "Routing Error", "classification": "Warning"}
+  },
+  {
+    "id": "syntax",
+    "log": "SyntaxError: invalid syntax in settings.py line 18",
+    "expected": {"error_type": "Syntax Error", "classification": "Critical Bug"}
+  },
+  {
+    "id": "type",
+    "log": "TypeError: unsupported operand type(s) for +: 'int' and 'str'",
+    "expected": {"error_type": "Type Error", "classification": "Critical Bug"}
+  },
+  {
+    "id": "value",
+    "log": "ValueError: invalid literal for int() with base 10: 'abc'",
+    "expected": {"error_type": "Value Error", "classification": "Critical Bug"}
+  },
+  {
+    "id": "sql",
+    "log": "SQLSTATE 23505 duplicate key violates unique constraint users_email_key",
+    "expected": {"error_type": "Database Issue", "classification": "Critical Bug"}
+  },
+  {
+    "id": "gateway-500",
+    "log": "nginx upstream returned internal server error 500 for /checkout",
+    "expected": {"error_type": "Backend Error", "classification": "Critical Bug"}
+  },
+  {
+    "id": "slow-job",
+    "log": "worker job timed out while generating monthly report",
+    "expected": {"error_type": "Performance Issue", "classification": "Warning"}
+  },
+  {
+    "id": "postgres",
+    "log": "postgres could not serialize access due to concurrent update",
+    "expected": {"error_type": "Database Issue", "classification": "Critical Bug"}
+  },
+  {
+    "id": "unauthorized",
+    "log": "Unauthorized: token signature verification failed",
+    "expected": {"error_type": "Authentication Issue", "classification": "Critical Bug"}
+  },
+  {
+    "id": "memory",
+    "log": "MemoryError: unable to allocate 256 MiB array",
+    "expected": {"error_type": "Memory Error", "classification": "Critical Bug"}
+  },
+  {
+    "id": "import-error",
+    "log": "ImportError: cannot import name 'Client' from 'sdk'",
+    "expected": {"error_type": "Dependency Import Error", "classification": "Critical Bug"}
+  },
+  {
+    "id": "unknown-info",
+    "log": "INFO scheduler heartbeat completed without errors",
+    "expected": {"error_type": "Unknown", "classification": "Info"}
+  }
+]

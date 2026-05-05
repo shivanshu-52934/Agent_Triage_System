@@ -13,7 +13,14 @@ class GitHubAgent:
             "Accept": "application/vnd.github.v3+json"
         }
 
+    def _configured(self):
+        return bool(GITHUB_TOKEN and REPO)
+
     def create_issue(self, title, body):
+        if not self._configured():
+            print("CREATE ISSUE SKIPPED: GITHUB_TOKEN or GITHUB_REPO is not configured")
+            return None
+
         url = f"https://api.github.com/repos/{REPO}/issues"
 
         response = requests.post(
@@ -32,6 +39,9 @@ class GitHubAgent:
         return None
 
     def get_open_issues(self):
+        if not self._configured():
+            return []
+
         url = f"https://api.github.com/repos/{REPO}/issues?state=open"
 
         response = requests.get(url, headers=self.headers)
@@ -54,6 +64,9 @@ class GitHubAgent:
         return cleaned
 
     def close_issue(self, issue_number):
+        if not self._configured():
+            return False
+
         url = f"https://api.github.com/repos/{REPO}/issues/{issue_number}"
 
         response = requests.patch(

@@ -6,8 +6,10 @@ load_dotenv()
 
 from app.services.pipeline import run_pipeline
 from app.services.memory_store import get_top_errors
+from app.services.tracing import read_traces
 from app.agents.github_agent import GitHubAgent
 from app.services.issue_classifier import group_issues_llm
+from eval.run_eval import run_eval
 
 app = FastAPI()
 
@@ -38,6 +40,16 @@ async def upload(file: UploadFile = File(...)):
 @app.get("/top-errors")
 def top_errors():
     return {"top_errors": get_top_errors()}
+
+
+@app.get("/traces")
+def traces(limit: int = 100):
+    return {"traces": read_traces(limit)}
+
+
+@app.post("/eval/run")
+def eval_run():
+    return run_eval()
 
 
 @app.get("/issues")
